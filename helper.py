@@ -41,20 +41,19 @@ def read_data():
     return [depots, drops, depot_ids, drop_ids, depot_capacity]
 
 def result_builder(allocation_list, depot_locations, drop_locations, depot_ids, drop_ids, depot_capacity):
-    result = []
+    result = {}
     for depot_index, drop_list in allocation_list.items():
-        drops_info = []
+        drops_info = {}
         for drop_index in drop_list:
-            drops_info.append({
-                "drop_id": drop_ids[drop_index],
+            drops_info[drop_ids[drop_index]] = {
                 "drop_location": drop_locations[drop_index]
-            })
-        result.append({
-            "depot_id": depot_ids[depot_index],
+            }
+
+        result[depot_ids[depot_index]] = {
             "depot_location": depot_locations[depot_index],
             "drops": drops_info,
             "depot_capacity": depot_capacity[depot_index]
-        })
+        }
     return result
 
 def plot_allocation_result_matplot(ax, allocation_result):
@@ -67,20 +66,20 @@ def plot_allocation_result_matplot(ax, allocation_result):
     y_drop = []
     drop_ids = []
 
-    for depot in allocation_result:
+    for depot_id, depot_info in allocation_result.items():
         c = random.choice(color)
-        depot_location = depot["depot_location"]
-        drops = depot["drops"]
+        depot_location = depot_info["depot_location"]
+        drops = depot_info["drops"]
         x_depot.append(depot_location[0])
         y_depot.append(depot_location[1])
-        depot_ids.append(depot["depot_id"])
+        depot_ids.append(depot_id)
 
         if len(drops) > 0:
-            for drop in drops:
-                drop_location = drop["drop_location"]
+            for drop_id, drop_info in drops:
+                drop_location = drop_info["drop_location"]
                 x_drop.append(drop_location[0])
                 y_drop.append(drop_location[1])
-                drop_ids.append(drop["drop_id"])
+                drop_ids.append(drop_id)
                 ax.plot([depot_location[0], drop_location[0]], [depot_location[1], drop_location[1]], c = c, alpha=0.7, zorder=1)
     
     ax.scatter(x=x_depot, y=y_depot, color='r', s=100, zorder=2, label='Service Centers')
@@ -98,20 +97,20 @@ def plot_allocation_result_plotly(allocation_result):
     color = px.colors.sequential.Inferno
     fig = go.Figure()
 
-    for depot in allocation_result:
+    for depot_id, depot_info in allocation_result.items():
         connector_color = random.choice(color)
-        depot_location = depot["depot_location"]
-        drops = depot["drops"]
+        depot_location = depot_info["depot_location"]
+        drops = depot_info["drops"]
         x_depot.append(depot_location[0])
         y_depot.append(depot_location[1])
-        depot_ids.append(depot["depot_id"])
+        depot_ids.append(depot_id)
 
         if len(drops) > 0:
-            for drop in drops:
-                drop_location = drop["drop_location"]
+            for drop_id, drop_info in drops.items():
+                drop_location = drop_info["drop_location"]
                 x_drop.append(drop_location[0])
                 y_drop.append(drop_location[1])
-                drop_ids.append(drop["drop_id"])
+                drop_ids.append(drop_id)
                 fig.add_trace(go.Scatter(x=[depot_location[0], drop_location[0]], y=[depot_location[1], drop_location[1]],
                     mode='lines+markers', showlegend=False, line_color=connector_color, hoverinfo="skip"))
 

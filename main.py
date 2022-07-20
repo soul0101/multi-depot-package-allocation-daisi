@@ -23,14 +23,17 @@ def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depo
 
     Returns
     -------
-    A list containing the allocation information for each depot:
-        [{
-            "depot_id": <depot_id>,
-            "depot_location": <array(latitude, longitude)>,
-            "drops" : <list[{"drop_id": <drop_id>, "drop_location": <array(latitude, longitude)>}]>
-            "depot_capacity": <list[int, int, int...]>
-        }, 
-        {...}]
+    Dict containing the allocation information for each depot:
+        {
+            <depot_id> : {
+                "depot_location": <array(latitude, longitude)>,
+                "drops" : {
+                            <drop_id1> : "drop_location": <array(latitude, longitude)>,
+                            <drop_id2> : "drop_location": <array(latitude, longitude)>,
+                        }
+                "depot_capacity": int>
+            }, ...
+        }
     """
     allocation_list = optimization.optimize(depot_locations, drop_locations, depot_capacity)
     result = helper.result_builder(allocation_list, depot_locations, drop_locations, depot_ids, drop_ids, depot_capacity)
