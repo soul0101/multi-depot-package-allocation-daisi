@@ -3,6 +3,7 @@ matplotlib
 numpy
 ortools
 pandas
+plotly
 scikit-learn
 scipy 
 streamlit
