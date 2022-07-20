@@ -58,9 +58,7 @@ def result_builder(allocation_list, depot_locations, drop_locations, depot_ids, 
         })
     return result
 
-def plot_allocation_result_matplot(allocation_result):
-    fig = plt.figure()
-    ax = fig.add_subplot(1, 1, 1)
+def plot_allocation_result_matplot(ax, allocation_result):
     color = cm.Dark2(np.linspace(0, 1, 100))
 
     x_depot = [] 
@@ -88,9 +86,9 @@ def plot_allocation_result_matplot(allocation_result):
     
     ax.scatter(x=x_depot, y=y_depot, color='r', s=100, zorder=2, label='Service Centers')
     ax.scatter(x=x_drop, y=y_drop, color='b', zorder=0, alpha = 0.7, label='Drops')
-    ax.legend()
+    out = ax.legend()
     
-    return fig
+    return out
 
 def plot_allocation_result_plotly(allocation_result):
     x_depot = [] 

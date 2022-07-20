@@ -37,13 +37,13 @@ def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depo
     return result
 
 
-def get_allocations_plot_matplot(allocation_result):
+def get_allocations_plot_matplot(ax, allocation_result):
     """
     Returns a Matplotlib Figure
     """
-    return helper.plot_allocation_result_matplot(allocation_result)
+    return helper.plot_allocation_result_matplot(ax, allocation_result)
 
-def get_allocations_plot_plotly(allocation_result):
+def get_allocations_plot_plotly(ax, allocation_result):
     """
     Returns a Plotly Figure
     """
@@ -77,7 +77,7 @@ def st_ui():
     if generate:
         with st.spinner("Calculating..."):
             result = allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacity)
-            fig = get_allocations_plot_plotly(result)
+            fig = helper.plot_allocation_result_plotly(result)
             st.plotly_chart(fig, use_container_width=True)
             st.header("Result")
             st.json(result, expanded=False)

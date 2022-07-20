@@ -46,8 +46,6 @@ def initialize_solver(costs, depot_capacity, num_depots, num_drops):
         solver.Add(
             solver.Sum([allocation_matrix[depot, drop] for depot in range(num_depots)]) <= 1)
 
-    print("Constraints setting done!")
-
     """
     Objective
     """
