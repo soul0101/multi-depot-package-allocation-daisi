@@ -43,7 +43,7 @@ def get_allocations_plot_matplot(ax, allocation_result):
     """
     return helper.plot_allocation_result_matplot(ax, allocation_result)
 
-def get_allocations_plot_plotly(ax, allocation_result):
+def get_allocations_plot_plotly(allocation_result):
     """
     Returns a Plotly Figure
     """
