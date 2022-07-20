@@ -6,7 +6,7 @@ import streamlit as st
 @st.cache(suppress_st_warning=True)
 def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacity):
     """
-    Runs the MIP solver
+    Runs the MIP solver 
 
     Parameters
     ----------
