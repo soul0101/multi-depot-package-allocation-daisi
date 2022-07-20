@@ -21,6 +21,12 @@ depot_capacity:
     A list of integers representing the maximum number of packages that can be allocated to each depot.
 """
 result = multi_depot_package_allocation.allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacity).value
+
+"""
+Plot plotly graph
+"""
+fig = multi_depot_package_allocation.get_allocations_plot_plotly(result).value
+fig.show()
 ```
 ## Reference
 https://github.com/soul0101/Multi-Depot-Package-Allocation
