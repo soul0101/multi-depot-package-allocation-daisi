@@ -76,7 +76,7 @@ def plot_allocation_result_matplot(allocation_result):
         depot_ids.append(depot_id)
 
         if len(drops) > 0:
-            for drop_id, drop_info in drops:
+            for drop_id, drop_info in drops.items():
                 drop_location = drop_info["drop_location"]
                 x_drop.append(drop_location[0])
                 y_drop.append(drop_location[1])
