@@ -40,11 +40,11 @@ def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depo
     return result
 
 
-def get_allocations_plot_matplot(ax, allocation_result):
+def get_allocations_plot_matplot(allocation_result):
     """
     Returns a Matplotlib Figure
     """
-    return helper.plot_allocation_result_matplot(ax, allocation_result)
+    return helper.plot_allocation_result_matplot(allocation_result)
 
 def get_allocations_plot_plotly(allocation_result):
     """
