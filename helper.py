@@ -2,6 +2,7 @@ import random
 import numpy as np
 import pandas as pd
 import plotly.express as px
+import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm
 import plotly.graph_objects as go
 
@@ -56,9 +57,9 @@ def result_builder(allocation_list, depot_locations, drop_locations, depot_ids, 
         }
     return result
 
-def plot_allocation_result_matplot(ax, allocation_result):
+def plot_allocation_result_matplot(allocation_result):
+    fig, ax = plt.subplots()
     color = cm.Dark2(np.linspace(0, 1, 100))
-
     x_depot = [] 
     y_depot = []
     depot_ids = []
@@ -85,7 +86,7 @@ def plot_allocation_result_matplot(ax, allocation_result):
     ax.scatter(x=x_depot, y=y_depot, color='r', s=100, zorder=2, label='Service Centers')
     ax.scatter(x=x_drop, y=y_drop, color='b', zorder=0, alpha = 0.7, label='Drops')
     
-    return ax
+    return fig
 
 def plot_allocation_result_plotly(allocation_result):
     x_depot = [] 
