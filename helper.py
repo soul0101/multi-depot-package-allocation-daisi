@@ -36,12 +36,12 @@ def read_data():
 
     depots = np.column_stack((df_depots['Latitude'], df_depots['Longitude']))
     drops = np.column_stack((df_drops['Latitude'], df_drops['Longitude']))
-    depot_capacity = df_depots['Depot Capacity']
+    depot_capacities = df_depots['Depot Capacity']
     depot_ids = df_depots['Depot ID']
     drop_ids = df_drops['Drop ID']
-    return [depots, drops, depot_ids, drop_ids, depot_capacity]
+    return [depots, drops, depot_ids, drop_ids, depot_capacities]
 
-def result_builder(allocation_list, depot_locations, drop_locations, depot_ids, drop_ids, depot_capacity):
+def result_builder(allocation_list, depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities):
     result = {}
     for depot_index, drop_list in allocation_list.items():
         drops_info = {}
@@ -53,7 +53,7 @@ def result_builder(allocation_list, depot_locations, drop_locations, depot_ids, 
         result[depot_ids[depot_index]] = {
             "depot_location": depot_locations[depot_index],
             "drops": drops_info,
-            "depot_capacity": depot_capacity[depot_index]
+            "depot_capacity": depot_capacities[depot_index]
         }
     return result
 

@@ -4,7 +4,7 @@ import optimization
 import streamlit as st
 
 @st.cache(suppress_st_warning=True)
-def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacity):
+def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities):
     """
     Runs the MIP solver 
 
@@ -18,7 +18,7 @@ def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depo
         A list of integers containing the id of each depot.
     drop_ids: 
         A list of integers containing the id of each drop location.
-    depot_capacity: 
+    depot_capacities: 
         A list of integers representing the maximum number of packages that can be allocated to each depot.
 
     Returns
@@ -35,8 +35,8 @@ def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depo
             }, ...
         }
     """
-    allocation_list = optimization.optimize(depot_locations, drop_locations, depot_capacity)
-    result = helper.result_builder(allocation_list, depot_locations, drop_locations, depot_ids, drop_ids, depot_capacity)
+    allocation_list = optimization.optimize(depot_locations, drop_locations, depot_capacities)
+    result = helper.result_builder(allocation_list, depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities)
     return result
 
 
@@ -75,11 +75,11 @@ def st_ui():
         df_drops = pd.read_csv('./data/city_drops1.csv')
         st.dataframe(df_drops)
 
-    [depot_locations, drop_locations, depot_ids, drop_ids, depot_capacity] = helper.read_data()
+    [depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities] = helper.read_data()
     generate = st.button("Allocate Drops")
     if generate:
         with st.spinner("Calculating..."):
-            result = allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacity)
+            result = allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities)
             fig = helper.plot_allocation_result_plotly(result)
             st.plotly_chart(fig, use_container_width=True)
             st.header("Result")

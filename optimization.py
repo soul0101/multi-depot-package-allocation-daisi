@@ -9,7 +9,7 @@ def initialize_cost(depot_locations, drop_locations):
     cost = pairwise.haversine_distances([[math.radians(_[0]), math.radians(_[1])] for _ in depot_locations] , [[math.radians(_[0]), math.radians(_[1])] for _ in drop_locations] ) * 6371
     return cost
 
-def initialize_solver(costs, depot_capacity, num_depots, num_drops):
+def initialize_solver(costs, depot_capacities, num_depots, num_drops):
 
     """
     - Create the mip solver with the CBC backend.
@@ -33,14 +33,14 @@ def initialize_solver(costs, depot_capacity, num_depots, num_drops):
     """
     Constraints
     ------------
-    - The total size of the drops each depot i takes on is at most depot_capacity[i]
+    - The total size of the drops each depot i takes on is at most depot_capacities[i]
     - Each drop is assigned to exactly one or none depot.
     """
     for depot in range(num_depots):
         solver.Add(
             solver.Sum([
                 allocation_matrix[depot, drop] for drop in range(num_drops)
-            ]) <= depot_capacity[depot])
+            ]) <= depot_capacities[depot])
 
     for drop in range(num_drops):
         solver.Add(
@@ -66,12 +66,12 @@ def initialize_solver(costs, depot_capacity, num_depots, num_drops):
     status = solver.Solve()
     return allocation_matrix, status, solver
 
-def optimize(depot_locations, drop_locations, depot_capacity):
+def optimize(depot_locations, drop_locations, depot_capacities):
     num_depots = len(depot_locations)
     num_drops = len(drop_locations)
 
     costs = initialize_cost(depot_locations, drop_locations)
-    allocation_matrix, status, solver = initialize_solver(costs, depot_capacity, num_depots, num_drops)
+    allocation_matrix, status, solver = initialize_solver(costs, depot_capacities, num_depots, num_drops)
 
     if status == pywraplp.Solver.OPTIMAL or status == pywraplp.Solver.FEASIBLE:
         print(f'Total cost = {solver.Objective().Value()}\n')
