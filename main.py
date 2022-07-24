@@ -1,7 +1,12 @@
+import random
 import helper
 import pandas as pd
 import optimization
 import streamlit as st
+import plotly.express as px
+import matplotlib.pyplot as plt
+from matplotlib.pyplot import cm
+import plotly.graph_objects as go
 
 @st.cache(suppress_st_warning=True)
 def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities):
@@ -39,18 +44,78 @@ def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depo
     result = helper.result_builder(allocation_list, depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities)
     return result
 
-
-def get_allocations_plot_matplot(allocation_result):
-    """
-    Returns a Matplotlib Figure
-    """
-    return helper.plot_allocation_result_matplot(allocation_result)
-
 def get_allocations_plot_plotly(allocation_result):
     """
     Returns a Plotly Figure
     """
-    return helper.plot_allocation_result_plotly(allocation_result)
+
+    x_depot = [] 
+    y_depot = []
+    depot_ids = []
+    x_drop = []
+    y_drop = []
+    drop_ids = []
+    color = px.colors.sequential.Inferno
+    fig = go.Figure()
+
+    for depot_id, depot_info in allocation_result.items():
+        connector_color = random.choice(color)
+        depot_location = depot_info["depot_location"]
+        drops = depot_info["drops"]
+        x_depot.append(depot_location[0])
+        y_depot.append(depot_location[1])
+        depot_ids.append(depot_id)
+
+        if len(drops) > 0:
+            for drop_id, drop_info in drops.items():
+                drop_location = drop_info["drop_location"]
+                x_drop.append(drop_location[0])
+                y_drop.append(drop_location[1])
+                drop_ids.append(drop_id)
+                fig.add_trace(go.Scatter(x=[depot_location[0], drop_location[0]], y=[depot_location[1], drop_location[1]],
+                    mode='lines+markers', showlegend=False, line_color=connector_color, hoverinfo="skip"))
+
+
+    fig.add_trace(go.Scatter(x=x_drop, y=y_drop,
+                    mode='markers',
+                    name='Drops', hovertext=drop_ids, 
+                    marker=dict(color='#848ff0', size=6, 
+                    line=dict(width=1,color='DarkSlateGrey'))))
+    fig.add_trace(go.Scatter(x=x_depot, y=y_depot,
+                    mode='markers',
+                    name='Depots', hovertext=depot_ids, 
+                    marker=dict(color='red', size=12, 
+                    line=dict(width=1,color='DarkSlateGrey'))))
+    fig.update_layout(
+        width=700,
+        height=500,
+        margin=dict(
+            l=50,
+            r=50,
+            b=100,
+            t=100,
+            pad=4
+        ),
+        title={
+        'text': "Package Allocation",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'
+        },
+        xaxis_title="Latitude",
+        yaxis_title="Longitude",
+        paper_bgcolor="#D3D3D3",
+        plot_bgcolor="#C0C0C0",
+        font=dict(
+            family="monospace",
+            size=18,
+            color="black"
+        )
+    )
+    return fig
+
+################################## UI ##############################################
 
 def st_ui():
     st.write("# Welcome to the Multi-Depot Package Allocation Daisi! 👋")
