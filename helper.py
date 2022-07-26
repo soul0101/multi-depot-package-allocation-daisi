@@ -37,6 +37,16 @@ def read_data():
     drop_ids = df_drops['Drop ID']
     return [depots, drops, depot_ids, drop_ids, depot_capacities]
 
+def sanitize(depot_ids, drop_ids, depot_capacities, num_depot, num_drop):
+    if depot_ids is None:
+        depot_ids = list(range(num_depot))
+    if drop_ids is None:
+        drop_ids = list(range(num_drop))
+    if depot_capacities is None:
+        depot_capacities = num_depot * [100]
+    
+    return depot_ids, drop_ids, depot_capacities
+
 def result_builder(allocation_list, depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities):
     result = {}
     for depot_index, drop_list in allocation_list.items():
@@ -52,4 +62,3 @@ def result_builder(allocation_list, depot_locations, drop_locations, depot_ids, 
             "depot_capacity": depot_capacities[depot_index]
         }
     return result
-

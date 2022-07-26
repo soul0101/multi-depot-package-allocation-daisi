@@ -9,7 +9,7 @@ from matplotlib.pyplot import cm
 import plotly.graph_objects as go
 
 @st.cache(suppress_st_warning=True)
-def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities):
+def allocate_packages(depot_locations, drop_locations, depot_ids=None, drop_ids=None, depot_capacities=None):
     """
     Runs the MIP solver 
 
@@ -40,6 +40,9 @@ def allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depo
             }, ...
         }
     """
+
+    depot_ids, drop_ids, depot_capacities = helper.sanitize(depot_ids, drop_ids, depot_capacities, len(depot_locations), len(drop_locations))
+        
     allocation_list = optimization.optimize(depot_locations, drop_locations, depot_capacities)
     result = helper.result_builder(allocation_list, depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities)
     return result
