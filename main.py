@@ -148,7 +148,7 @@ def st_ui():
     if generate:
         with st.spinner("Calculating..."):
             result = allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities)
-            fig = helper.plot_allocation_result_plotly(result)
+            fig = get_allocations_plot_plotly(result)
             st.plotly_chart(fig, use_container_width=True)
             st.header("Result")
             st.json(result, expanded=False)
