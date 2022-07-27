@@ -1,6 +1,4 @@
 import random
-import numpy as np
-import pandas as pd
 
 def generate_locs_two_region(num_rows):
     lat = [18.627160, 18.621160]
@@ -25,17 +23,6 @@ def generate_locs(num_rows):
         dec_lon = random.random()/100
         result.append((lat + dec_lat, lon + dec_lon))
     return result
-
-def read_data():
-    df_depots = pd.read_csv('./data/city_depots1.csv')
-    df_drops = pd.read_csv('./data/city_drops1.csv')
-
-    depots = np.column_stack((df_depots['Latitude'], df_depots['Longitude']))
-    drops = np.column_stack((df_drops['Latitude'], df_drops['Longitude']))
-    depot_capacities = df_depots['Depot Capacity']
-    depot_ids = df_depots['Depot ID']
-    drop_ids = df_drops['Drop ID']
-    return [depots, drops, depot_ids, drop_ids, depot_capacities]
 
 def sanitize(depot_ids, drop_ids, depot_capacities, num_depot, num_drop):
     if depot_ids is None:

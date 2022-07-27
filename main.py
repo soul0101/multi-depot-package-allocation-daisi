@@ -1,11 +1,10 @@
 import random
 import helper
+import numpy as np
 import pandas as pd
 import optimization
 import streamlit as st
 import plotly.express as px
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import cm
 import plotly.graph_objects as go
 
 @st.cache(suppress_st_warning=True)
@@ -120,6 +119,17 @@ def get_allocations_plot_plotly(allocation_result):
 
 ################################## UI ##############################################
 
+def get_dummy_data():
+    df_depots = pd.read_csv('./data/city_depots1.csv')
+    df_drops = pd.read_csv('./data/city_drops1.csv')
+
+    depots = np.column_stack((df_depots['Latitude'], df_depots['Longitude']))
+    drops = np.column_stack((df_drops['Latitude'], df_drops['Longitude']))
+    depot_capacities = df_depots['Depot Capacity']
+    depot_ids = df_depots['Depot ID']
+    drop_ids = df_drops['Drop ID']
+    return [depots, drops, depot_ids, drop_ids, depot_capacities]
+
 def st_ui():
     st.write("# Welcome to the Multi-Depot Package Allocation Daisi! 👋")
     st.markdown(
@@ -143,7 +153,7 @@ def st_ui():
         df_drops = pd.read_csv('./data/city_drops1.csv')
         st.dataframe(df_drops)
 
-    [depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities] = helper.read_data()
+    [depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities] = get_dummy_data()
     generate = st.button("Allocate Drops")
     if generate:
         with st.spinner("Calculating..."):
