@@ -69,25 +69,34 @@ def get_allocations_plot_plotly(allocation_result):
         depot_ids.append(depot_id)
 
         if len(drops) > 0:
+            plot_lines_x = []
+            plot_lines_y = []
+
             for drop_id, drop_info in drops.items():
                 drop_location = drop_info["drop_location"]
                 x_drop.append(drop_location[0])
                 y_drop.append(drop_location[1])
                 drop_ids.append(drop_id)
-                fig.add_trace(go.Scatter(x=[depot_location[0], drop_location[0]], y=[depot_location[1], drop_location[1]],
-                    mode='lines+markers', showlegend=False, line_color=connector_color, hoverinfo="skip"))
 
+                plot_lines_x.extend([depot_location[0], drop_location[0]])
+                plot_lines_y.extend([depot_location[1], drop_location[1]])
 
+            fig.add_trace(go.Scatter(x=plot_lines_x, 
+                                        y=plot_lines_y,
+                                        mode='lines+markers', line_color=connector_color, showlegend=False, hoverinfo="skip"))
+    
     fig.add_trace(go.Scatter(x=x_drop, y=y_drop,
                     mode='markers',
                     name='Drops', hovertext=drop_ids, 
                     marker=dict(color='#848ff0', size=6, 
                     line=dict(width=1,color='DarkSlateGrey'))))
+
     fig.add_trace(go.Scatter(x=x_depot, y=y_depot,
                     mode='markers',
                     name='Depots', hovertext=depot_ids, 
                     marker=dict(color='red', size=12, 
                     line=dict(width=1,color='DarkSlateGrey'))))
+                    
     fig.update_layout(
         width=700,
         height=500,
