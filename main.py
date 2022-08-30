@@ -137,7 +137,7 @@ def get_dummy_data():
     depot_capacities = df_depots['Depot Capacity']
     depot_ids = df_depots['Depot ID']
     drop_ids = df_drops['Drop ID']
-    return [depots, drops, depot_ids, drop_ids, depot_capacities]
+    return depots, drops, depot_ids, drop_ids, depot_capacities
 
 def st_ui():
     st.write("# Welcome to the Multi-Depot Package Allocation Daisi! 👋")
@@ -162,7 +162,7 @@ def st_ui():
         df_drops = pd.read_csv('./data/city_drops1.csv')
         st.dataframe(df_drops)
 
-    [depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities] = get_dummy_data()
+    depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities = get_dummy_data()
     generate = st.button("Allocate Drops")
     if generate:
         with st.spinner("Calculating..."):
