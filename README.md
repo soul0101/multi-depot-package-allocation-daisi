@@ -11,7 +11,7 @@ import pydaisi as pyd
 multi_depot_package_allocation = pyd.Daisi("soul0101/Multi-Depot Package Allocation")
 
 # Get dummy data
-[depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities] = multi_depot_package_allocation.get_dummy_data().value
+depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities = multi_depot_package_allocation.get_dummy_data().value
 
 # Generate results
 res = multi_depot_package_allocation.allocate_packages(depot_locations, drop_locations, depot_ids, drop_ids, depot_capacities).value
